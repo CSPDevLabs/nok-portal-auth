@@ -1,4 +1,4 @@
-name: Build and Push nok-portal-auth
+name: Build and Push nok-portal-auth-keycloak
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/portal-auth
+          images: ghcr.io/${{ github.repository_owner }}/nok-portal-auth-keycloak
           tags: |
             type=ref,event=tag
             type=sha,format=short
@@ -47,8 +47,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./keycloak
+          file: ./keycloak/Dockerfile
           push: true
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}

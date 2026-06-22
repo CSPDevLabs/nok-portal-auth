@@ -1,73 +1,167 @@
-# NetOpsKube Portal Authentication
+# Keycloak \- NetOpsKube
 
-A lightweight Flask-based authentication service used for protecting NetOpsKube portal applications through NGINX Ingress external authentication.
+Keycloak is used as the Identity Provider (IdP) for NetOpsKube and provides authentication and authorization through OpenID Connect (OIDC). Authentication is enforced using OAuth2 Proxy integrated with the Kubernetes NGINX Ingress Controller.
 
-## Overview
 
-This service provides a simple login page and session-based authentication mechanism for applications exposed through Kubernetes Ingress.
-
-The application is designed to work with the NGINX Ingress Controller using:
-
-- `nginx.ingress.kubernetes.io/auth-url`
-- `nginx.ingress.kubernetes.io/auth-signin`
-
-annotations.
+| Component | Purpose |
+| :---- | :---- |
+| Keycloak | Identity Provider (OIDC) |
+| PostgreSQL | Persistent storage for Keycloak users, roles, groups, sessions, and realm data |
+| OAuth2 Proxy | OIDC authentication proxy |
+| NGINX Ingress | Protects application endpoints using OAuth2 Proxy authentication |
 
 ---
 
-# Authentication Flow
+## Access Keycloak Admin Console
 
-1. User accesses the protected application URL.
+URL: http://keycloak.nok.local:8080/admin/master/console
 
-2. NGINX Ingress sends an authentication request to:
+Default administrator credentials are configured in keycloak-admin-secret.yaml
 
-```text
-/auth
+Username - admin
+
+Password - admin
+
+---
+
+## Realm Configuration
+
+Realm configuration is automatically imported during deployment.
+
+Name: netopskube
+
+---
+
+## Session Settings
+
+| Setting | Value |
+| :---- | :---- |
+| Access Token Lifespan | 5 Minutes |
+| SSO Session Idle Timeout | 8 Hours |
+| SSO Session Max Lifespan | 10 Hours |
+| Offline Session Idle Timeout | 30 Days |
+| Login Action Timeout | 30 Minutes |
+
+### Session Behaviour
+
+* Users remain logged in while active.
+* If no activity occurs for 8 hours, the session expires.
+* A session can never exceed 10 hours regardless of activity.
+* Access tokens are refreshed automatically while the SSO session remains valid.
+* Logout immediately terminates the Keycloak session and OAuth2 Proxy session.
+
+---
+
+## User Management
+
+User accounts are created manually through the Keycloak Admin Console.
+
+Navigation: Users → Create User
+
+### Required Fields
+
+* Username
+* Email
+* First Name
+* Last Name
+
+### Recommended User Creation Procedure
+
+1. Create user.
+2. Set password.
+3. Disable temporary password option if password reset is not required.
+4. Ensure no Required Actions are assigned unless explicitly needed.
+
+---
+
+## Password Policy
+
+The following password policy is enforced:
+
+* Minimum 8 characters
+* At least 1 uppercase letter
+* At least 1 lowercase letter
+* At least 1 digit
+* At least 1 special character
+
+### Example Valid Passwords
+  
+Welcome@1  
+NetOps#2026
+
+---
+
+## PostgreSQL Persistence
+
+Keycloak uses a dedicated PostgreSQL StatefulSet.
+
+Storage is backed by a PersistentVolumeClaim (PVC).
+
+Data stored in PostgreSQL includes:
+
+* Users
+* Password hashes
+* Roles
+* Groups
+* Client configuration
+* Sessions
+* Realm settings
+
+### Data Retention
+
+The following operations preserve data:
+
+* Keycloak pod restart
+* Keycloak deployment restart
+* PostgreSQL pod restart
+* Kubernetes node reboot
+* Ubuntu server reboot
+
+### Data Loss Scenarios
+
+The following operations remove all Keycloak data:
+
+* Deleting namespace nok-bng
+* Deleting Keycloak PostgreSQL PVC
+* Deleting Keycloak PostgreSQL PV
+* Redeployment
+
+User accounts are not restored unless they are recreated manually.
+
+---
+
+## Deployment
+
+Authentication components are deployed using:
+
+```bash
+make configure-auth
 ```
 
-3. If the authentication cookie is missing or invalid:
-   - the auth service returns `401 Unauthorized`
-   - NGINX redirects the user to:
+Authentication deployment can be enabled or disabled using:
 
-```text
-/login
+```bash
+KEYCLOAK_ENABLED=YES
 ```
 
-4. User submits username and password through the login page.
+If you wish to skip Keycloak integration, just mention 'NO'.
 
-5. Flask validates the credentials using environment variables injected from Kubernetes Secrets.
+When enabled, the following components are deployed:
 
-6. On successful login:
-   - an authentication cookie is created
-   - the user is redirected back to the originally requested URL
+* PostgreSQL
+* Keycloak
+* OAuth2 Proxy
+* Keycloak Ingress
+* OAuth2 Proxy Ingress
+* Authentication annotations on application ingresses
 
-7. Future requests containing the cookie are allowed by the `/auth` endpoint.
+---
 
+## Authentication Flow
 
-# Kubernetes Secret Integration
-
-Credentials are not hardcoded inside the application.
-
-The Flask service reads credentials from Kubernetes Secrets through environment variables:
-
-```python
-PORTAL_USERNAME
-PORTAL_PASSWORD
-```
-
-# Container Build
-
-The application container includes:
-
-- Flask application (`app.py`)
-- HTML login template (`templates/login.html`)
-- Python dependencies (`requirements.txt`)
-
-
-# Tech Stack
-
-- Python
-- Flask
-- Kubernetes
-- NGINX Ingress Controller
-- Docker
+* User accesses NetOpsKube application.
+* NGINX Ingress redirects unauthenticated users to OAuth2 Proxy.
+* OAuth2 Proxy redirects user to Keycloak.
+* User authenticates with Keycloak.
+* OAuth2 Proxy establishes session.
+* User gains access to the application.
