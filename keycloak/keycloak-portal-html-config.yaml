@@ -309,8 +309,9 @@ data:
       const logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
+          appFrame.src = "about:blank";
           loadingOverlay.classList.add('hidden');
-          window.location.href = "/oauth2/sign_out";
+          window.top.location.href = "/oauth2/sign_out";
       
         });
       }
@@ -353,16 +354,16 @@ data:
         .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
         .then(menuItems => {
 
-          menuItems.forEach((item, index) => {
-
-            const prometheus = menuItems.find(
+          const prometheus = menuItems.find(
                 item => item.name === "Prometheus"
-            );
+          );
             
-            if (prometheus) {
+          if (prometheus) {
                 loadingOverlay.classList.remove('hidden');
                 appFrame.src = prometheus.path;
-            }
+          }
+
+          menuItems.forEach((item, index) => {
             
             const menuItem = document.createElement('div');
             menuItem.className = 'menu-item';
