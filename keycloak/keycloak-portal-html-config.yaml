@@ -12,11 +12,17 @@ data:
         root /usr/share/nginx/html;
 
         location / {
+            add_header Cache-Control "no-store, no-cache, must-revalidate";
+            add_header Pragma "no-cache";
+            add_header Expires "0";
             try_files $uri $uri/ /index.html;
         }
 
         location = /menu-config.json {
             default_type application/json;
+            add_header Cache-Control "no-store";
+            add_header Pragma "no-cache";
+            add_header Expires "0";
         }
 
         location = /healthz {
@@ -419,7 +425,7 @@ data:
         logoutBtn.addEventListener('click', () => {
           appFrame.src = "about:blank";
           loadingOverlay.classList.add('hidden');
-          window.top.location.href = "/oauth2/sign_out";
+          window.top.location.href = "/oauth2/sign_out?rd=/oauth2/start?rd=%2F"
       
         });
       }
