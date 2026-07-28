@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oauth2-proxy
-  namespace: nok-bng
+  namespace: nok-base
 
 spec:
   replicas: 1

@@ -16,7 +16,7 @@ data:
             fallthrough
         }
         
-        rewrite name keycloak.nok.local keycloak.nok-bng.svc.cluster.local
+        rewrite name keycloak.nok.local keycloak.nok-base.svc.cluster.local
 
         kubernetes cluster.local in-addr.arpa ip6.arpa {
            pods insecure

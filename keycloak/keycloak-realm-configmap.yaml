@@ -2496,4 +2496,4 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: keycloak-realm
-  namespace: nok-bng
+  namespace: nok-base
