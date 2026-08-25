@@ -2485,6 +2485,23 @@ data:
       "organizationsEnabled": false,
       "verifiableCredentialsEnabled": false,
       "adminPermissionsEnabled": false,
+      "users": [
+        {
+          "username": "nokuser",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "Test",
+          "lastName": "User",
+          "email": "nokuser@nok.local",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "Nokpswd@123",
+              "temporary": false
+            }
+          ]
+        }
+      ],
       "clientProfiles": {
         "profiles": []
       },
