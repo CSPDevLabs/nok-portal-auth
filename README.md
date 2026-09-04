@@ -12,23 +12,76 @@ Keycloak is used as the Identity Provider (IdP) for NetOpsKube and provides auth
 
 ---
 
+## Access NetOpsKube Portal
+
+The NetOpsKube Portal is the primary entry point for users.
+
+**Portal URL:**
+
+`http://bng.nok.local`
+
+A default user is automatically created when the `netopskube` Keycloak realm is imported.
+
+### Default Portal User
+
+| Field | Value |
+| :--- | :--- |
+| Username | `nokuser` |
+| Password | `Nokpswd@123` |
+| Email | `nokuser@nok.local` |
+| First Name | Test |
+| Last Name | User |
+| Enabled | Yes |
+| Email Verified | Yes |
+
+The default user can be used to authenticate and access the NetOpsKube Portal.
+
+> **Security Note:** The default password is intended for initial access/demo environments. It should be changed before using NetOpsKube in a production environment.
+
+---
+
 ## Access Keycloak Admin Console
 
-URL: http://keycloak.nok.local:8080/admin/master/console
+The Keycloak Master Admin Console can be accessed from the **Keycloak** option available inside the NetOpsKube Portal.
 
-Default administrator credentials are configured in keycloak-admin-secret.yaml
+The portal provides a **Keycloak** entry that opens the Keycloak Master Console in a new browser tab.
 
-Username - admin
+**Keycloak Admin Console:**
 
-Password - admin
+`http://bng.nok.local:8080/auth/admin/master/console`
+
+### Default Administrator Credentials
+
+Default administrator credentials are configured in `keycloak-admin-secret.yaml`.
+
+| Field | Value |
+| :--- | :--- |
+| Username | `admin` |
+| Password | `admin` |
+
+> **Security Note:** The default administrator password should be changed before using NetOpsKube in a production environment.
+
+The Keycloak Admin Console can be used to manage:
+
+- Users
+- Roles
+- Groups
+- Clients
+- Realm settings
+- Authentication settings
+- Sessions
 
 ---
 
 ## Realm Configuration
 
-Realm configuration is automatically imported during deployment.
+he Keycloak realm configuration is automatically imported during deployment.
 
-Name: netopskube
+**Realm Name:**
+
+`netopskube`
+
+The imported realm contains the required configuration for NetOpsKube authentication, including clients, users, roles, and authentication settings.
 
 ---
 
@@ -54,9 +107,11 @@ Name: netopskube
 
 ## User Management
 
-User accounts are created manually through the Keycloak Admin Console.
+User accounts are managed through the Keycloak Admin Console.
 
-Navigation: Users → Create User
+Navigate to:
+
+**Users → Create User**
 
 ### Required Fields
 

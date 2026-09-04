@@ -8,10 +8,10 @@ spec:
   ingressClassName: nginx
 
   rules:
-  - host: keycloak.nok.local
+  - host: bng.nok.local
     http:
       paths:
-      - path: /
+      - path: /auth
         pathType: Prefix
         backend:
           service:

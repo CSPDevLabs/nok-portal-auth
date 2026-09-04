@@ -63,7 +63,10 @@ spec:
               key: POSTGRES_PASSWORD
 
         - name: KC_HOSTNAME
-          value: http://keycloak.nok.local:8080
+          value: http://bng.nok.local:8080/auth
+        
+        - name: KC_HTTP_RELATIVE_PATH
+          value: /auth
 
         - name: KC_HTTP_ENABLED
           value: "true"
