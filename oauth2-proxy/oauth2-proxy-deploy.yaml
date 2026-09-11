@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy
+  namespace: nok-base
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: oauth2-proxy
+
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy
+
+    spec:
+      containers:
+      - name: oauth2-proxy
+
+        image: quay.io/oauth2-proxy/oauth2-proxy:v7.8.1
+
+        args:
+        - --provider=keycloak-oidc
+
+        - --http-address=0.0.0.0:4180
+
+        - --oidc-issuer-url=http://bng.nok.local:8080/auth/realms/netopskube
+
+        - --skip-oidc-discovery=true
+
+        - --login-url=http://bng.nok.local:8080/auth/realms/netopskube/protocol/openid-connect/auth
+        
+        - --redeem-url=http://keycloak.nok-base.svc.cluster.local:8080/auth/realms/netopskube/protocol/openid-connect/token
+
+        - --oidc-jwks-url=http://keycloak.nok-base.svc.cluster.local:8080/auth/realms/netopskube/protocol/openid-connect/certs
+
+        - --backend-logout-url=http://keycloak.nok-base.svc.cluster.local:8080/auth/realms/netopskube/protocol/openid-connect/logout?id_token_hint={id_token}
+
+        - --redirect-url=http://bng.nok.local:8080/oauth2/callback
+
+        - --cookie-path=/
+
+        - --whitelist-domain=bng.nok.local:8080
+
+        - --cookie-csrf-per-request=true
+        
+        - --cookie-csrf-expire=5m
+
+        - --skip-provider-button=true
+
+        - --client-id=nok-portal
+
+        - --client-secret=$(CLIENT_SECRET)
+
+        - --cookie-secret=$(COOKIE_SECRET)
+
+        - --cookie-secure=false
+
+        - --cookie-samesite=lax
+
+        - --cookie-httponly=true
+
+        - --email-domain=*
+
+        - --insecure-oidc-allow-unverified-email=true
+
+        - --upstream=static://200
+
+        - --reverse-proxy=true
+
+        env:
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oauth2-proxy-secret
+              key: client-secret
+
+        - name: COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oauth2-proxy-secret
+              key: cookie-secret
+
+        ports:
+        - containerPort: 4180

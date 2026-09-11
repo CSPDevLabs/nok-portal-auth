@@ -12,20 +12,57 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
+    background:#021124;
+    position:relative;
+}
+
+body::before {
+    content:"";
+    position:fixed;
+    inset:-50%;
+
+    background:
+      radial-gradient(circle at 20% 30%, #00bfff 0%, transparent 30%),
+      radial-gradient(circle at 80% 20%, #1f6feb 0%, transparent 35%),
+      radial-gradient(circle at 50% 80%, #4da3ff 0%, transparent 30%);
+
+    animation: aurora 12s ease-in-out infinite alternate;
+    filter: blur(80px);
+
+    z-index: -1;          /* IMPORTANT */
+    pointer-events: none; /* IMPORTANT */
+}
+
+@keyframes aurora {
+    from {
+        transform: translateX(-5%) translateY(-5%);
+    }
+    to {
+        transform: translateX(5%) translateY(5%);
+    }
 }
 
 .login-container {
+    position: relative;
+    z-index: 10;          /* IMPORTANT */
+
     background:white;
     padding:40px;
     width:410px;
     border-radius:10px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.3);
     text-align:center;
+
+    border:1px solid rgba(0,123,255,0.25);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.3),
+        0 0 15px rgba(0,123,255,0.35),
+        0 0 35px rgba(0,123,255,0.20);
 }
 
 .logo {
@@ -94,7 +131,6 @@ button:hover {
     font-size:14px;
     margin-top:5px;
     margin-bottom:10px;
-    display:none;
 }
 
 </style>
@@ -108,18 +144,29 @@ button:hover {
 
 <h2>NetOpsKube</h2>
 
-<form method="POST">
+<form id="kc-form-login"
+      action="${url.loginAction}"
+      method="post">
 
-<input type="text" name="username" placeholder="Username" required>
+<input
+    type="text"
+    id="username"
+    name="username"
+    value="${(login.username!'')}"
+    placeholder="Username"
+    required
+    autofocus>
 
 <div class="password-wrapper">
 <input type="password" name="password" id="password" placeholder="Password" required>
 <span class="toggle-password" onclick="togglePassword()">👁</span>
 </div>
 
-<div class="error-message" id="error-msg">
-Incorrect username or password
+<#if message?has_content>
+<div class="error-message">
+    ${kcSanitize(message.summary)?no_esc}
 </div>
+</#if>
 
 <button type="submit">Login</button>
 
@@ -143,12 +190,6 @@ function togglePassword() {
 }
 </script>
 <script>
-
-const params = new URLSearchParams(window.location.search);
-
-if(params.get("error")){
-    document.getElementById("error-msg").style.display="block";
-}
 
 </script>
 
