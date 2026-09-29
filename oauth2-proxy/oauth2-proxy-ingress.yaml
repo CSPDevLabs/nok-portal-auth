@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: oauth2-proxy-ingress
   namespace: nok-base
-
 spec:
   ingressClassName: nginx
 

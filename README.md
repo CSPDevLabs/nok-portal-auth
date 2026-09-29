@@ -73,9 +73,21 @@ The Keycloak Admin Console can be used to manage:
 
 ---
 
-## Realm Configuration
+## Login theme image
 
-he Keycloak realm configuration is automatically imported during deployment.
+The `netopskube` login theme is baked into the Keycloak container image. After editing files under `keycloak/themes/netopskube/`:
+
+```bash
+cd keycloak
+docker build -t ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0 .
+# On kind: kind load docker-image ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0
+```
+
+Push tag `v1.1.0` (or newer) to trigger the GitHub Actions workflow, or load the image into your cluster registry for local testing.
+
+---
+
+The Keycloak realm configuration is automatically imported during deployment.
 
 **Realm Name:**
 
@@ -214,9 +226,10 @@ When enabled, the following components are deployed:
 
 ## Authentication Flow
 
-* User accesses NetOpsKube application.
-* NGINX Ingress redirects unauthenticated users to OAuth2 Proxy.
-* OAuth2 Proxy redirects user to Keycloak.
-* User authenticates with Keycloak.
-* OAuth2 Proxy establishes session.
-* User gains access to the application.
+* User accesses NetOpsKube at `http://bng.nok.local:8080`.
+* NGINX Ingress redirects unauthenticated users to OAuth2 Proxy (`/oauth2/start`).
+* OAuth2 Proxy redirects to Keycloak on the **same host** at `/auth` (no separate `keycloak.nok.local` hostname).
+* User sees the NetOpsKube-themed login page and authenticates.
+* OAuth2 Proxy establishes session and returns the user to the requested app.
+
+Login theme: `netopskube` (Nokia-style split-screen layout, aligned with common-platform).
