@@ -21,7 +21,7 @@ spec:
       containers:
       - name: keycloak
 
-        image: ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0
+        image: ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.0.0
         imagePullPolicy: Always
 
         args:
