@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>${properties.appName!:"NetOpsKube"} Login</title>
+    <title>${properties.appName!"NetOpsKube"} Login</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -121,7 +121,7 @@
 <div class="box-container">
     <div class="left">
         <div class="left-inner">
-            <h1>${properties.appName!:"NetOpsKube"}</h1>
+            <h1>${properties.appName!"NetOpsKube"}</h1>
             <p>Network observability and operations portal. Sign in to access Grafana, Prometheus, GitOps, and recipe dashboards.</p>
         </div>
     </div>
