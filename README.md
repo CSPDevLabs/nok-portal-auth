@@ -75,15 +75,7 @@ The Keycloak Admin Console can be used to manage:
 
 ## Login theme image
 
-The `netopskube` login theme is baked into the Keycloak container image. After editing files under `keycloak/themes/netopskube/`:
-
-```bash
-cd keycloak
-docker build -t ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0 .
-# On kind: kind load docker-image ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0
-```
-
-Push tag `v1.1.0` (or newer) to trigger the GitHub Actions workflow, or load the image into your cluster registry for local testing.
+The `netopskube` login theme is baked into the Keycloak container image. 
 
 ---
 
