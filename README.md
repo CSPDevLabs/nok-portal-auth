@@ -18,7 +18,7 @@ The NetOpsKube Portal is the primary entry point for users.
 
 **Portal URL:**
 
-`http://bng.nok.local`
+`http://portal.nok.local`
 
 A default user is automatically created when the `netopskube` Keycloak realm is imported.
 
@@ -48,7 +48,7 @@ The portal provides a **Keycloak** entry that opens the Keycloak Master Console 
 
 **Keycloak Admin Console:**
 
-`http://bng.nok.local:8080/auth/admin/master/console`
+`http://portal.nok.local:8080/auth/admin/master/console`
 
 ### Default Administrator Credentials
 
@@ -226,7 +226,7 @@ When enabled, the following components are deployed:
 
 ## Authentication Flow
 
-* User accesses NetOpsKube at `http://bng.nok.local:8080`.
+* User accesses NetOpsKube at `http://portal.nok.local:8080`.
 * NGINX Ingress redirects unauthenticated users to OAuth2 Proxy (`/oauth2/start`).
 * OAuth2 Proxy redirects to Keycloak on the **same host** at `/auth` (no separate `keycloak.nok.local` hostname).
 * User sees the NetOpsKube-themed login page and authenticates.

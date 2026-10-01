@@ -5,6 +5,6 @@ metadata:
   namespace: nok-base
 data:
   X-Forwarded-Proto: http
-  X-Forwarded-Host: bng.nok.local:8080
+  X-Forwarded-Host: portal.nok.local:8080
   X-Forwarded-Port: "8080"
   X-Forwarded-Prefix: /auth

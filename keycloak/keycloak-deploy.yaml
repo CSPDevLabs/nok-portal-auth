@@ -69,10 +69,10 @@ spec:
 
         # Full URL (with /auth path) so login form actions include :8080 (KinD port-forward).
         - name: KC_HOSTNAME
-          value: http://bng.nok.local:8080/auth
+          value: http://portal.nok.local:8080/auth
 
         - name: KC_HOSTNAME_ADMIN
-          value: http://bng.nok.local:8080/auth
+          value: http://portal.nok.local:8080/auth
 
         - name: KC_HOSTNAME_STRICT
           value: "false"

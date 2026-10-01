@@ -678,8 +678,8 @@ data:
           "clientId": "nok-portal",
           "name": "NOK Portal",
           "description": "",
-          "rootUrl": "http://bng.nok.local:8080",
-          "adminUrl": "http://bng.nok.local:8080",
+          "rootUrl": "http://portal.nok.local:8080",
+          "adminUrl": "http://portal.nok.local:8080",
           "baseUrl": "",
           "surrogateAuthRequired": false,
           "enabled": true,
@@ -687,7 +687,7 @@ data:
           "clientAuthenticatorType": "client-secret",
           "secret": "sxV7tuV2qL8Lse1Sxkecwn2OrAxC39js",
           "redirectUris": [
-            "http://bng.nok.local:8080/*"
+            "http://portal.nok.local:8080/*"
           ],
           "webOrigins": [
             "*"

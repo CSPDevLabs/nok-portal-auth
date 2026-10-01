@@ -33,9 +33,9 @@ spec:
 
         - --http-address=0.0.0.0:4180
 
-        - --oidc-issuer-url=http://bng.nok.local:8080/auth/realms/netopskube
+        - --oidc-issuer-url=http://portal.nok.local:8080/auth/realms/netopskube
 
-        - --login-url=http://bng.nok.local:8080/auth/realms/netopskube/protocol/openid-connect/auth
+        - --login-url=http://portal.nok.local:8080/auth/realms/netopskube/protocol/openid-connect/auth
 
         - --redeem-url=http://keycloak.nok-base.svc.cluster.local:8080/auth/realms/netopskube/protocol/openid-connect/token
 
@@ -45,11 +45,11 @@ spec:
 
         - --backend-logout-url=http://keycloak.nok-base.svc.cluster.local:8080/auth/realms/netopskube/protocol/openid-connect/logout?id_token_hint={id_token}
 
-        - --redirect-url=http://bng.nok.local:8080/oauth2/callback
+        - --redirect-url=http://portal.nok.local:8080/oauth2/callback
 
         - --cookie-path=/
 
-        - --whitelist-domain=bng.nok.local:8080
+        - --whitelist-domain=portal.nok.local:8080
 
         - --cookie-csrf-per-request=true
         
