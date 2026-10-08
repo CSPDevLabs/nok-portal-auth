@@ -18,7 +18,7 @@ The NetOpsKube Portal is the primary entry point for users.
 
 **Portal URL:**
 
-`http://portal.nok.local`
+`http://portal.nok.local:8080`
 
 A default user is automatically created when the `netopskube` Keycloak realm is imported.
 
@@ -43,12 +43,6 @@ The default user can be used to authenticate and access the NetOpsKube Portal.
 ## Access Keycloak Admin Console
 
 The Keycloak Master Admin Console can be accessed from the **Keycloak** option available inside the NetOpsKube Portal.
-
-The portal provides a **Keycloak** entry that opens the Keycloak Master Console in a new browser tab.
-
-**Keycloak Admin Console:**
-
-`http://portal.nok.local:8080/auth/admin/master/console`
 
 ### Default Administrator Credentials
 
@@ -75,15 +69,7 @@ The Keycloak Admin Console can be used to manage:
 
 ## Login theme image
 
-The `netopskube` login theme is baked into the Keycloak container image. After editing files under `keycloak/themes/netopskube/`:
-
-```bash
-cd keycloak
-docker build -t ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0 .
-# On kind: kind load docker-image ghcr.io/cspdevlabs/nok-portal-auth-keycloak:v1.1.0
-```
-
-Push tag `v1.1.0` (or newer) to trigger the GitHub Actions workflow, or load the image into your cluster registry for local testing.
+The `netopskube` login theme is baked into the Keycloak container image.
 
 ---
 
@@ -228,8 +214,6 @@ When enabled, the following components are deployed:
 
 * User accesses NetOpsKube at `http://portal.nok.local:8080`.
 * NGINX Ingress redirects unauthenticated users to OAuth2 Proxy (`/oauth2/start`).
-* OAuth2 Proxy redirects to Keycloak on the **same host** at `/auth` (no separate `keycloak.nok.local` hostname).
+* OAuth2 Proxy redirects to Keycloak on the **same host** at `/auth`.
 * User sees the NetOpsKube-themed login page and authenticates.
 * OAuth2 Proxy establishes session and returns the user to the requested app.
-
-Login theme: `netopskube` (Nokia-style split-screen layout, aligned with common-platform).
